@@ -26,7 +26,8 @@ impl super::BuildConfig {
             cmk.define("CMAKE_C_COMPILER_FORCED", "TRUE");
         }
 
-        let target = std::env::var("TARGET").expect("TARGET environment variable should be set in build scripts");
+        let target = std::env::var("TARGET")
+            .expect("TARGET environment variable should be set in build scripts");
         // thumbv6m-none-eabi, thumbv7em-none-eabi, thumbv7em-none-eabihf, thumbv7m-none-eabi
         // probably use arm-none-eabi-gcc which can cause the cmake compiler test to fail.
         if target.starts_with("thumbv") && target.contains("none-eabi") {
@@ -59,7 +60,17 @@ impl super::BuildConfig {
         println!("cargo:rustc-link-lib=mbedx509");
         println!("cargo:rustc-link-lib=mbedcrypto");
 
-        println!("cargo:include={}", ::std::env::current_dir().unwrap().join(&self.mbedtls_include).to_str().expect("include/ UTF-8 error"));
-        println!("cargo:config_h={}", self.config_h.to_str().expect("config.h UTF-8 error"));
+        println!(
+            "cargo:include={}",
+            ::std::env::current_dir()
+                .unwrap()
+                .join(&self.mbedtls_include)
+                .to_str()
+                .expect("include/ UTF-8 error")
+        );
+        println!(
+            "cargo:config_h={}",
+            self.config_h.to_str().expect("config.h UTF-8 error")
+        );
     }
 }

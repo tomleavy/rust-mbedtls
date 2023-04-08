@@ -6,7 +6,6 @@
  * option. This file may not be copied, modified, or distributed except
  * according to those terms. */
 
-#![deny(warnings)]
 #![allow(unused_doc_comments)]
 #![cfg_attr(not(feature = "std"), no_std)]
 
@@ -40,6 +39,7 @@ pub mod hash;
 pub mod pk;
 pub mod rng;
 pub mod self_test;
+#[cfg(feature = "ssl")]
 pub mod ssl;
 pub mod x509;
 
@@ -96,6 +96,8 @@ mod mbedtls {
 #[cfg(not(feature = "std"))]
 mod alloc_prelude {
     #![allow(unused)]
+    #[cfg(not(target_has_atomic = "ptr"))]
+    pub(crate) use portable_atomic_util::Arc;
     pub(crate) use rust_alloc::borrow::Cow;
     pub(crate) use rust_alloc::borrow::ToOwned;
     pub(crate) use rust_alloc::boxed::Box;

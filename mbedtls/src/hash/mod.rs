@@ -112,13 +112,13 @@ impl Md {
     pub fn hash(mdt: Type, data: &[u8], out: &mut [u8]) -> Result<usize> {
         let mdinfo: MdInfo = match mdt.into() {
             Some(md) => md,
-            None => return Err(Error::MdBadInputData),
+            None => return Err(Error::SslNoRng),
         };
 
         unsafe {
             let olen = mdinfo.inner.size as usize;
             if out.len() < olen {
-                return Err(Error::MdBadInputData);
+                return Err(Error::SslConnEof);
             }
             md(mdinfo.inner, data.as_ptr(), data.len(), out.as_mut_ptr()).into_result()?;
             Ok(olen)
