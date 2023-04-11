@@ -33,7 +33,6 @@ impl super::BuildConfig {
         if target.starts_with("thumbv") && target.contains("none-eabi") {
             // When building on Linux, -rdynamic flag is added automatically. Changing the
             // CMAKE_SYSTEM_NAME to Generic avoids this.
-            cmk.define("CMAKE_SYSTEM_NAME", "Generic");
             // The compiler test requires _exit which is not available. By just trying to compile
             // a library, we can fix it.
             cmk.define("CMAKE_TRY_COMPILE_TARGET_TYPE", "STATIC_LIBRARY");
